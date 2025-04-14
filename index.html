@@ -218,12 +218,12 @@
         </form>
     </div>
 
-  <script>
+ <script>
 function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     
-    // En-tête professionnel
+    // En-tête
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(43, 108, 176);
@@ -231,11 +231,10 @@ function generatePDF() {
     
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
-    doc.setTextColor(0, 0, 0);
     doc.text("Adresse: Bureau Du Comité De Village Redjaouna El Bour Tizi-Ouzou", 15, 22);
     doc.text("TA066168-7723", 15, 28);
 
-    // Section Bulletin d'Inscription
+    // Section Inscription
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text("BULLETIN D'INSCRIPTION", 15, 40);
@@ -244,14 +243,14 @@ function generatePDF() {
     let y = 50;
     
     // Informations personnelles
-    const infosPerso = [
+    const infos = [
         `Prénom & Nom: ${formData.get('nom_complet')}`,
         `Date/Lieu de naissance: ${formData.get('date_naissance')} - ${formData.get('lieu_naissance')}`,
         `Adresse: ${formData.get('adresse')}`,
         `Niveau scolaire: ${formData.get('niveau_scolaire')}`
     ];
     
-    infosPerso.forEach(info => {
+    infos.forEach(info => {
         doc.setFontSize(12);
         doc.text(info, 15, y);
         y += 8;
@@ -282,13 +281,12 @@ function generatePDF() {
     // Signature et cachet
     y += 15;
     doc.setLineWidth(0.5);
-    doc.line(15, y, 60, y); // Ligne signature
+    doc.line(15, y, 60, y);
     doc.text("Signature du tuteur", 15, y + 5);
-    
-    doc.rect(130, y - 10, 50, 25); // Cadre cachet
+    doc.rect(130, y - 10, 50, 25);
     doc.text("Cachet du club", 135, y + 5);
 
-    // Certificat Médical (Nouvelle page)
+    // Certificat Médical
     doc.addPage();
     y = 30;
     doc.setFontSize(14);
@@ -298,7 +296,7 @@ function generatePDF() {
     const certificat = [
         `Je soussigné(e) Dr. ${formData.get('nom_medecin')}`,
         "atteste par la présente que le nommé(e):",
-        `${formData.get('nom_complet')}`,
+        `${formData.get('nom_complet')}`, // Correction ici
         "est apte à pratiquer la natation.",
         "",
         `Date du certificat: ${formData.get('date_certificat')}`
@@ -313,12 +311,9 @@ function generatePDF() {
     y += 20;
     doc.line(15, y, 60, y);
     doc.text("Signature et cachet du médecin", 15, y + 5);
-    
-    // Visa médical
     doc.rect(130, y - 10, 50, 25);
     doc.text("Visa médical", 135, y + 5);
 
-    // Enregistrement
     doc.save(`Inscription-CSR-${formData.get('nom_complet')}.pdf`);
 }
 </script>
