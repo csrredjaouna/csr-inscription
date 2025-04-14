@@ -106,7 +106,8 @@
     <div class="container">
         <div class="header">
             <h1>CLUB SPORTIF REDJAOUNA/CSR</h1>
-            <p>Adresse: Bureau Du Comité De Village Redjaouna El Bour Tizi-Ouzou<br>TA066168-7723</p>
+            <p>Adresse: Bureau Du Comité De Village Redjaouna El Bour Tizi-Ouzou 
+                TA066168-7723</p>
         </div>
 
         <form id="myForm" action="https://formspree.io/f/xyzevzwa" method="POST">
@@ -217,105 +218,117 @@
             </div>
         </form>
     </div>
-
- <script>
+<script>
 function generatePDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-    
-    // En-tête
-    doc.setFontSize(16);
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({
+    unit: 'pt',
+    format: 'a4'
+  });
+
+  const form = document.getElementById('myForm');
+  const data = Object.fromEntries(new FormData(form).entries());
+
+  // CONFIGURATION GÉNÉRALE
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const margin = 40;
+  let cursorY = margin;
+
+  // FONCTIONS UTILES
+  const addTitle = (text) => {
     doc.setFont('helvetica', 'bold');
+    doc.setFontSize(18);
     doc.setTextColor(43, 108, 176);
-    doc.text("CLUB SPORTIF REDJAOUNA/CSR", 15, 15);
-    
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'normal');
-    doc.text("Adresse: Bureau Du Comité De Village Redjaouna El Bour Tizi-Ouzou", 15, 22);
-    doc.text("TA066168-7723", 15, 28);
+    doc.text(text, pageWidth / 2, cursorY, { align: 'center' });
+    cursorY += 30;
+  };
 
-    // Section Inscription
-    doc.setFontSize(14);
+  const addSectionHeader = (text) => {
     doc.setFont('helvetica', 'bold');
-    doc.text("BULLETIN D'INSCRIPTION", 15, 40);
-    
-    const formData = new FormData(document.getElementById('myForm'));
-    let y = 50;
-    
-    // Informations personnelles
-    const infos = [
-        `Prénom & Nom: ${formData.get('nom_complet')}`,
-        `Date/Lieu de naissance: ${formData.get('date_naissance')} - ${formData.get('lieu_naissance')}`,
-        `Adresse: ${formData.get('adresse')}`,
-        `Niveau scolaire: ${formData.get('niveau_scolaire')}`
-    ];
-    
-    infos.forEach(info => {
-        doc.setFontSize(12);
-        doc.text(info, 15, y);
-        y += 8;
-    });
-
-    // Autorisation Parentale
-    y += 15;
     doc.setFontSize(14);
-    doc.text("AUTORISATION PATERNELLE", 15, y);
-    y += 10;
-    
-    const autorisation = [
-        `Tuteur: ${formData.get('nom_tuteur')}`,
-        `CNI/PC/PS N°: ${formData.get('cni')}`,
-        `Téléphone: ${formData.get('telephone')}`,
-        `Adresse tuteur: ${formData.get('adresse_tuteur')}`,
-        "",
-        "Je soussigné(e) déclare autoriser mon enfant à pratiquer",
-        "la natation au sein du Club Sportif Redjaouna.",
-        `Fait à: ${formData.get('fait_a')} le ${formData.get('date_autorisation')}`
-    ];
-    
-    autorisation.forEach(line => {
-        doc.text(line, 15, y);
-        y += 8;
-    });
-    
-    // Signature et cachet
-    y += 15;
+    doc.setTextColor(33, 37, 41);
+    doc.text(text, margin, cursorY);
+    cursorY += 20;
+  };
+
+  const addKeyValue = (key, value) => {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.text(`${key}:`, margin, cursorY);
+    doc.setFont('helvetica', 'normal');
+    doc.text(String(value), margin + 120, cursorY);
+    cursorY += 18;
+  };
+
+  const drawLine = () => {
+    doc.setDrawColor(200);
     doc.setLineWidth(0.5);
-    doc.line(15, y, 60, y);
-    doc.text("Signature du tuteur", 15, y + 5);
-    doc.rect(130, y - 10, 50, 25);
-    doc.text("Cachet du club", 135, y + 5);
+    doc.line(margin, cursorY, pageWidth - margin, cursorY);
+    cursorY += 10;
+  };
 
-    // Certificat Médical
-    doc.addPage();
-    y = 30;
-    doc.setFontSize(14);
-    doc.text("CERTIFICAT MÉDICAL", 15, y);
-    y += 15;
-    
-    const certificat = [
-        `Je soussigné(e) Dr. ${formData.get('nom_medecin')}`,
-        "atteste par la présente que le nommé(e):",
-        `${formData.get('nom_complet')}`, // Correction ici
-        "est apte à pratiquer la natation.",
-        "",
-        `Date du certificat: ${formData.get('date_certificat')}`
-    ];
-    
-    certificat.forEach(line => {
-        doc.text(line, 15, y);
-        y += 8;
-    });
-    
-    // Signature médecin
-    y += 20;
-    doc.line(15, y, 60, y);
-    doc.text("Signature et cachet du médecin", 15, y + 5);
-    doc.rect(130, y - 10, 50, 25);
-    doc.text("Visa médical", 135, y + 5);
+  // 1. EN-TÊTE
+  addTitle('CLUB SPORTIF REDJAOUNA / CSR');
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(8);
+  doc.setTextColor(80);
+  doc.text(
+'Adresse : Bureau du Comité de Village Redjaouna El Bour,Tizi‑Ouzou', pageWidth / 2, cursorY, { align: 'center' });
+  cursorY += 25;
+  doc.text('Tél : 0661 68 77 23', pageWidth / 2, cursorY, { align: 'center' });
+  cursorY += 30;
+  drawLine();
 
-    doc.save(`Inscription-CSR-${formData.get('nom_complet')}.pdf`);
+  // 2. BULLETIN D’INSCRIPTION
+  addSectionHeader('1. BULLETIN D’INSCRIPTION');
+  addKeyValue('Prénom & Nom', data.nom_complet);
+  addKeyValue('Date de naissance', data.date_naissance);
+  addKeyValue('Lieu de naissance', data.lieu_naissance);
+  addKeyValue('Niveau scolaire', data.niveau_scolaire);
+  addKeyValue('Adresse complète', data.adresse);
+  cursorY += 10;
+  drawLine();
+
+  // 3. AUTORISATION PATERNELLE
+  addSectionHeader('2. AUTORISATION PATERNELLE');
+  addKeyValue('Nom & Prénom du tuteur', data.nom_tuteur);
+  addKeyValue('CNI/PC/PS N°', data.cni);
+  addKeyValue('Téléphone', data.telephone);
+  addKeyValue('Adresse du tuteur', data.adresse_tuteur);
+  addKeyValue('Fait à', data.fait_a);
+  addKeyValue('Le', data.date_autorisation);
+  cursorY += 10;
+  drawLine();
+
+  // 4. CERTIFICAT MÉDICAL
+  addSectionHeader('3. CERTIFICAT MÉDICAL');
+  addKeyValue('Nom du médecin', data.nom_medecin);
+  addKeyValue('Date du certificat', data.date_certificat);
+  addKeyValue('Nommé(e)', data.nom_complet);
+  addKeyValue('Aptitude', 'Apte à pratiquer ');
+  cursorY += 30;
+
+  // 5. SIGNATURES
+  const sigY = cursorY;
+  doc.setFontSize(11);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Signature du tuteur', margin, sigY);
+  doc.text('Signature & cachet du médecin', pageWidth - margin - 200, sigY);
+  doc.setDrawColor(100);
+  doc.setLineWidth(0.7);
+  doc.line(margin, sigY + 15, margin + 150, sigY + 15);
+  doc.line(pageWidth - margin - 200, sigY + 15, pageWidth - margin, sigY + 15);
+
+  // ENREGISTREMENT
+  doc.save(`Inscription-CSR-${data.nom_complet.replace(/\s+/g, '_')}.pdf`);
 }
 </script>
+
+
+
 </body>
 </html>
+      
+        
+        
+        
