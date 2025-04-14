@@ -236,40 +236,105 @@
         });
 
         // Génération PDF améliorée
-        function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // En-tête
-            doc.setFontSize(16);
-            doc.setTextColor(43, 108, 176);
-            doc.text("CLUB SPORTIF REDJAOUNA/CSR", 15, 15);
-            doc.setFontSize(10);
-            doc.text("Bureau du Comité de Village Redjaouna El Bour Tizi-Ouzou", 15, 22);
-            doc.text("TA066168-7723", 15, 28);
+       <script>
+function generatePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // En-tête professionnel
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(43, 108, 176);
+    doc.text("CLUB SPORTIF REDJAOUNA (CSR)", 15, 15);
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+    doc.text("Bureau du Comité de Village Redjaouna El Bour Tizi-Ouzou", 15, 22);
+    doc.text("TA066168-7723", 15, 28);
 
-            // Contenu
-            const formData = new FormData(form);
-            let y = 40;
-            
-            const fields = [
-                { label: 'Nom Complet', name: 'nom_complet' },
-                { label: 'Date Naissance', name: 'date_naissance' },
-                { label: 'Lieu Naissance', name: 'lieu_naissance' },
-                { label: 'Adresse', name: 'adresse' },
-                { label: 'Tuteur', name: 'nom_tuteur' },
-                { label: 'CNI/PC/PS', name: 'cni' },
-                { label: 'Médecin', name: 'nom_medecin' }
-            ];
+    // Section Bulletin d'Inscription
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text("BULLETIN D'INSCRIPTION", 15, 40);
+    
+    const formData = new FormData(document.getElementById('myForm'));
+    let y = 50;
+    
+    // Informations personnelles
+    const infos = [
+        `Prénom & Nom: ${formData.get('nom_complet')}`,
+        `Date/Lieu de naissance: ${formData.get('date_naissance')} à ${formData.get('lieu_naissance')}`,
+        `Adresse: ${formData.get('adresse')}`,
+        `Niveau scolaire: ${formData.get('niveau_scolaire')}`
+    ];
+    
+    infos.forEach(info => {
+        doc.setFontSize(12);
+        doc.text(info, 15, y);
+        y += 8;
+    });
 
-            fields.forEach(field => {
-                doc.setFontSize(12);
-                doc.text(`${field.label}: ${formData.get(field.name)}`, 15, y);
-                y += 10;
-            });
-
-            doc.save('inscription-csr.pdf');
-        }
+    // Autorisation Parentale
+    y += 10;
+    doc.setFontSize(14);
+    doc.text("AUTORISATION PATERNELLE", 15, y);
+    y += 10;
+    
+    const autorisation = [
+        `Tuteur: ${formData.get('nom_tuteur')}`,
+        `CNI/PC/PS N°: ${formData.get('cni')}`,
+        `Téléphone: ${formData.get('telephone')}`,
+        `Adresse tuteur: ${formData.get('adresse_tuteur')}`,
+        "",
+        "Je soussigné(e), déclare autoriser mon enfant à pratiquer",
+        "la natation au sein du Club Sportif Redjaouna."
+    ];
+    
+    autorisation.forEach(line => {
+        doc.text(line, 15, y);
+        y += 8;
+    });
+    
+    // Signature et cachet
+    y += 15;
+    doc.setLineWidth(0.5);
+    doc.line(15, y, 60, y); // Ligne signature
+    doc.text("Signature du tuteur", 15, y + 5);
+    
+    doc.rect(130, y - 10, 50, 25); // Cadre cachet
+    doc.text("Cachet du club", 135, y + 5);
+    
+    // Certificat Médical
+    doc.addPage();
+    y = 20;
+    doc.setFontSize(14);
+    doc.text("CERTIFICAT MEDICAL", 15, y);
+    y += 10;
+    
+    const certificat = [
+        `Je soussigné(e) Dr. ${formData.get('nom_medecin')}`,
+        "atteste par la présente que le nommé(e):",
+        `${formData.get('nom_complet')}`,
+        "est apte à pratiquer la natation.",
+        "",
+        `Fait le: ${formData.get('date_certificat')}`
+    ];
+    
+    certificat.forEach(line => {
+        doc.text(line, 15, y);
+        y += 8;
+    });
+    
+    // Signature médecin
+    y += 15;
+    doc.line(15, y, 60, y);
+    doc.text("Signature et cachet du médecin", 15, y + 5);
+    
+    // Enregistrement
+    doc.save(`Inscription-CSR-${formData.get('nom_complet')}.pdf`);
+}
+</script>
     </script>
 </body>
 </html>
