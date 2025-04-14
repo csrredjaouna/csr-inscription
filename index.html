@@ -218,25 +218,7 @@
         </form>
     </div>
 
-    <script>
-        // Configuration Formspree
-        const form = document.getElementById('myForm');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: new FormData(form),
-                headers: { 'Accept': 'application/json' }
-            });
-            
-            if (response.ok) {
-                alert('Inscription envoyée avec succès !');
-                form.reset();
-            }
-        });
-
-        // Génération PDF améliorée
-       <script>
+  <script>
 function generatePDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -245,12 +227,12 @@ function generatePDF() {
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(43, 108, 176);
-    doc.text("CLUB SPORTIF REDJAOUNA (CSR)", 15, 15);
+    doc.text("CLUB SPORTIF REDJAOUNA/CSR", 15, 15);
     
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(0, 0, 0);
-    doc.text("Bureau du Comité de Village Redjaouna El Bour Tizi-Ouzou", 15, 22);
+    doc.text("Adresse: Bureau Du Comité De Village Redjaouna El Bour Tizi-Ouzou", 15, 22);
     doc.text("TA066168-7723", 15, 28);
 
     // Section Bulletin d'Inscription
@@ -262,21 +244,21 @@ function generatePDF() {
     let y = 50;
     
     // Informations personnelles
-    const infos = [
+    const infosPerso = [
         `Prénom & Nom: ${formData.get('nom_complet')}`,
-        `Date/Lieu de naissance: ${formData.get('date_naissance')} à ${formData.get('lieu_naissance')}`,
+        `Date/Lieu de naissance: ${formData.get('date_naissance')} - ${formData.get('lieu_naissance')}`,
         `Adresse: ${formData.get('adresse')}`,
         `Niveau scolaire: ${formData.get('niveau_scolaire')}`
     ];
     
-    infos.forEach(info => {
+    infosPerso.forEach(info => {
         doc.setFontSize(12);
         doc.text(info, 15, y);
         y += 8;
     });
 
     // Autorisation Parentale
-    y += 10;
+    y += 15;
     doc.setFontSize(14);
     doc.text("AUTORISATION PATERNELLE", 15, y);
     y += 10;
@@ -287,8 +269,9 @@ function generatePDF() {
         `Téléphone: ${formData.get('telephone')}`,
         `Adresse tuteur: ${formData.get('adresse_tuteur')}`,
         "",
-        "Je soussigné(e), déclare autoriser mon enfant à pratiquer",
-        "la natation au sein du Club Sportif Redjaouna."
+        "Je soussigné(e) déclare autoriser mon enfant à pratiquer",
+        "la natation au sein du Club Sportif Redjaouna.",
+        `Fait à: ${formData.get('fait_a')} le ${formData.get('date_autorisation')}`
     ];
     
     autorisation.forEach(line => {
@@ -304,13 +287,13 @@ function generatePDF() {
     
     doc.rect(130, y - 10, 50, 25); // Cadre cachet
     doc.text("Cachet du club", 135, y + 5);
-    
-    // Certificat Médical
+
+    // Certificat Médical (Nouvelle page)
     doc.addPage();
-    y = 20;
+    y = 30;
     doc.setFontSize(14);
-    doc.text("CERTIFICAT MEDICAL", 15, y);
-    y += 10;
+    doc.text("CERTIFICAT MÉDICAL", 15, y);
+    y += 15;
     
     const certificat = [
         `Je soussigné(e) Dr. ${formData.get('nom_medecin')}`,
@@ -318,7 +301,7 @@ function generatePDF() {
         `${formData.get('nom_complet')}`,
         "est apte à pratiquer la natation.",
         "",
-        `Fait le: ${formData.get('date_certificat')}`
+        `Date du certificat: ${formData.get('date_certificat')}`
     ];
     
     certificat.forEach(line => {
@@ -327,14 +310,17 @@ function generatePDF() {
     });
     
     // Signature médecin
-    y += 15;
+    y += 20;
     doc.line(15, y, 60, y);
     doc.text("Signature et cachet du médecin", 15, y + 5);
     
+    // Visa médical
+    doc.rect(130, y - 10, 50, 25);
+    doc.text("Visa médical", 135, y + 5);
+
     // Enregistrement
     doc.save(`Inscription-CSR-${formData.get('nom_complet')}.pdf`);
 }
 </script>
-    </script>
 </body>
 </html>
