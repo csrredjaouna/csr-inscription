@@ -115,20 +115,20 @@
         <div class="form-row">
           <div class="form-group">
             <label for="nom_medecin">Nom du médecin</label>
-            <input id="nom_medecin" name="nom_medecin" type="text" required>
+            <input id="nom_medecin" name="nom_medecin" type="text">
           </div>
           <div class="form-group">
             <label for="date_certificat">Date du certificat</label>
-            <input id="date_certificat" name="date_certificat" type="date" required>
+            <input id="date_certificat" name="date_certificat" type="date">
           </div>
         </div>
         <div class="form-group">
           <p>
             Je soussigné(e) Dr <span class="signature-line"></span><br>
-            atteste par la présente que le(la) nommé(e) <input name="nom_certificat" type="text" required><br>
+            atteste que le(la) nommé(e) <input name="nom_certificat" type="text"><br>
             est apte à pratiquer sa discipline.<br>
             Date de validité<br>
-            <input name="date_validite" type="date" required>
+            <input name="date_validite" type="date">
           </p>
         </div>
         <div class="form-group">
@@ -152,21 +152,40 @@
       const M = 40;
       let y = M;
 
-      const title = t => { doc.setFont('helvetica','bold').setFontSize(18).setTextColor(43,108,176); doc.text(t, W/2, y, { align:'center' }); y+=30; };
-      const sectionH = t => { doc.setFont('helvetica','bold').setFontSize(14).setTextColor(33,37,41); doc.text(t, M, y); y+=20; };
-      const kv = (k,v) => { doc.setFont('helvetica','bold').setFontSize(11).text(k+' :', M, y); doc.setFont('helvetica','normal').text(v||'-', M+120, y); y+=18; };
-      const line = () => { doc.setDrawColor(200).setLineWidth(0.5).line(M,y,W-M,y); y+=10; };
+      const title = t => {
+        doc.setFont('helvetica','bold').setFontSize(18).setTextColor(43,108,176);
+        doc.text(t, W/2, y, { align:'center' });
+        y += 30;
+      };
+      const sectionH = t => {
+        doc.setFont('helvetica','bold').setFontSize(14).setTextColor(33,37,41);
+        doc.text(t, M, y);
+        y += 20;
+      };
+      // k/v avec valeur par défaut "null"
+      const kv = (k, v) => {
+        const value = (v || '').trim() !== '' ? v : 'null';
+        doc.setFont('helvetica','bold').setFontSize(11).text(k + ' :', M, y);
+        doc.setFont('helvetica','normal').text(value, M + 120, y);
+        y += 18;
+      };
+      const line = () => {
+        doc.setDrawColor(200).setLineWidth(0.5).line(M, y, W - M, y);
+        y += 10;
+      };
 
       const data = Object.fromEntries(new FormData(document.getElementById('myForm')).entries());
 
-      // 1. En‑tête
+      // En‑tête
       title('CLUB SPORTIF REDJAOUNA / CSR');
       doc.setFont('helvetica','normal').setFontSize(8).setTextColor(80);
-      doc.text('Adresse : Bureau du Comité de Village Redjaouna El Bour, Tizi‑Ouzou', W/2, y, { align:'center' }); y+=15;
-      doc.text('Tél : 0661 68 77 23', W/2, y, { align:'center' }); y+=25;
+      doc.text('Adresse : Bureau du Comité de Village Redjaouna El Bour, Tizi‑Ouzou', W/2, y, { align:'center' });
+      y += 15;
+      doc.text('Tél : 0661 68 77 23', W/2, y, { align:'center' });
+      y += 25;
       line();
 
-      // 2. Bulletin
+      // 1. Bulletin
       sectionH('1. BULLETIN D’INSCRIPTION');
       kv('Prénom & Nom',      data.nom_complet);
       kv('Date de naissance', data.date_naissance);
@@ -174,9 +193,9 @@
       kv('Niveau scolaire',   data.niveau_scolaire);
       kv('Adresse',           data.adresse);
       kv('Discipline',        data.discipline);
-      y+=5; line();
+      y += 5; line();
 
-      // 3. Autorisation parentale
+      // 2. Autorisation parentale
       sectionH('2. AUTORISATION PATERNELLE');
       kv('Nom & Prénom tuteur', data.nom_tuteur);
       kv('CNI/PC/PS N°',        data.cni);
@@ -184,32 +203,31 @@
       kv('Adresse tuteur',      data.adresse_tuteur);
       kv('Fait à',              data.fait_a);
       kv('Le',                  data.date_autorisation);
-      y+=5; line();
+      y += 5; line();
 
-      // Signature du tuteur à droite
+      // Signature du tuteur
       const tx = W - M - 150;
       doc.setFont('helvetica','normal').setFontSize(11);
       doc.text('Signature du tuteur', tx, y);
-      doc.setDrawColor(100).setLineWidth(0.7).line(tx, y+15, tx+150, y+15);
-
-      // Espacement de 5 lignes
+      doc.setDrawColor(100).setLineWidth(0.7).line(tx, y + 15, tx + 150, y + 15);
       y += 90;
 
-      // 4. Certificat médical
+      // 3. Certificat médical
       sectionH('3. CERTIFICAT MÉDICAL');
       kv('Nom du médecin',     data.nom_medecin);
       kv('Date du certificat', data.date_certificat);
       kv('Nommé(e)',           data.nom_certificat);
       kv('Date de validité',   data.date_validite);
+      // Si souhaité, garder une mention d'aptitude fixe :
       kv('Aptitude',           'Apte à pratiquer');
       y += 30;
 
-      // Signature du médecin à droite
+      // Signature du médecin
       doc.text('Signature du médecin', tx, y);
-      doc.setDrawColor(100).setLineWidth(0.7).line(tx, y+15, tx+150, y+15);
+      doc.setDrawColor(100).setLineWidth(0.7).line(tx, y + 15, tx + 150, y + 15);
 
-      // Enregistrement
-      const safe = (data.nom_complet||'inscription').trim().replace(/\s+/g,'_');
+      // Sauvegarde
+      const safe = (data.nom_complet || 'inscription').trim().replace(/\s+/g,'_');
       doc.save(`Inscription_CSR_${safe}.pdf`);
     }
   </script>
