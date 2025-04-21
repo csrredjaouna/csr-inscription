@@ -1,334 +1,217 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription CSR - Club Sportif Redjaouna</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
-        body {
-            background: #f5f7fa;
-            padding: 2rem;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid #2b6cb0;
-        }
-
-        .header h1 {
-            color: #2b6cb0;
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .section {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: #f8fafc;
-            border-radius: 8px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.2rem;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: #2d3748;
-            font-weight: 600;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 0.8rem;
-            border: 2px solid #cbd5e0;
-            border-radius: 6px;
-            font-size: 1rem;
-        }
-
-        .signature-line {
-            border-bottom: 2px solid #4a5568;
-            display: inline-block;
-            min-width: 250px;
-            margin: 0 5px;
-        }
-
-        button {
-            background: #2b6cb0;
-            color: white;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-            margin: 1rem 0.5rem;
-        }
-
-        button:hover {
-            background: #1e4e8c;
-        }
-
-        @media (max-width: 768px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inscription CSR - Club Sportif Redjaouna</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:Arial,sans-serif; }
+    body { background:#f5f7fa; padding:2rem; }
+    .container { max-width:800px; margin:auto; background:#fff; padding:2rem; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.1); }
+    .header { text-align:center; margin-bottom:2rem; padding-bottom:1rem; border-bottom:3px solid #2b6cb0; }
+    .header h1 { color:#2b6cb0; font-size:2.2rem; }
+    .section { margin:2rem 0; padding:1.5rem; background:#f8fafc; border-radius:8px; }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem; }
+    .form-group { margin-bottom:1.2rem; }
+    label { display:block; margin-bottom:.5rem; color:#2d3748; font-weight:600; }
+    input, select, textarea { width:100%; padding:.8rem; border:2px solid #cbd5e0; border-radius:6px; font-size:1rem; }
+    .signature-line { border-bottom:2px solid #4a5568; display:inline-block; min-width:150px; margin:0 5px; }
+    button { background:#2b6cb0; color:#fff; padding:1rem 2rem; border:none; border-radius:6px; cursor:pointer; transition:background .3s; margin:1rem .5rem; }
+    button:hover { background:#1e4e8c; }
+    @media(max-width:768px) { .form-row{grid-template-columns:1fr;} }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>CLUB SPORTIF REDJAOUNA/CSR</h1>
-            <p>Adresse: Bureau Du Comité De Village Redjaouna El Bour Tizi-Ouzou 
-                TA066168-7723</p>
-        </div>
-
-        <form id="myForm" action="https://formspree.io/f/xyzevzwa" method="POST">
-            <!-- Section Informations Personnelles -->
-            <div class="section">
-                <h2>BULLETIN D'INSCRIPTION</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Prénom et Nom</label>
-                        <input type="text" name="nom_complet" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Date de naissance</label>
-                        <input type="date" name="date_naissance" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Lieu de naissance</label>
-                        <input type="text" name="lieu_naissance" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Niveau scolaire</label>
-                        <select name="niveau_scolaire" required>
-                            <option value="">Sélectionner</option>
-                              <option>primaire</option>
-                            <option>1AM</option>
-                            <option>2AM</option>
-                            <option>3AM</option>
-                            <option>4AM</option>
-                            <option>1AS</option>
-                            <option>2AS</option>
-                            <option>3AS</option>
-                            <option>Universite licence</option>
-                             <option>Universite Master</option>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>Adresse complète</label>
-                    <textarea name="adresse" rows="3" required></textarea>
-                </div>
-            </div>
-
-            <!-- Section Autorisation Parentale -->
-            <div class="section">
-                <h2>AUTORISATION PATERNELLE</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nom et prénom du tuteur</label>
-                        <input type="text" name="nom_tuteur" required>
-                    </div>
-                    <div class="form-group">
-                        <label>CNI/PC/PS N°</label>
-                        <input type="text" name="cni" required>
-                    </div>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Téléphone</label>
-                        <input type="tel" name="telephone" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Adresse du tuteur</label>
-                        <input type="text" name="adresse_tuteur" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <p>Je soussigné(e) <span class="signature-line"></span><br>
-                    déclare autoriser mon enfant à pratiquer la natation au sein du CSR.<br>
-                    Fait à : <input type="text" name="fait_a" style="width: 120px;"> le : <input type="date" name="date_autorisation"></p>
-                </div>
-            </div>
-
-            <!-- Section Médicale -->
-            <div class="section">
-                <h2>CERTIFICAT MÉDICAL</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nom du médecin</label>
-                        <input type="text" name="nom_medecin" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Date du certificat</label>
-                        <input type="date" name="date_certificat" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <p>Je soussigné(e) Dr. <span class="signature-line"></span><br>
-                    atteste par la présente que le nommé(e) <input type="text" name="nom_certificat"><br>
-                    est apte à pratiquer la natation.</p>
-                </div>
-                
-                <div class="form-group">
-                    <label>Visa médical (signature numérique)</label>
-                    <input type="file" name="visa_medical" accept="image/*">
-                </div>
-            </div>
-
-            <div style="text-align: center;">
-                <button type="submit">Soumettre</button>
-                <button type="button" onclick="generatePDF()">Générer PDF</button>
-            </div>
-        </form>
+  <div class="container">
+    <div class="header">
+      <h1>CLUB SPORTIF REDJAOUNA / CSR</h1>
+      <p>Adresse : Bureau du Comité de Village Redjaouna El Bour, Tizi‑Ouzou – Tél : 0661 68 77 23</p>
     </div>
-<script>
-function generatePDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({
-    unit: 'pt',
-    format: 'a4'
-  });
 
-  const form = document.getElementById('myForm');
-  const data = Object.fromEntries(new FormData(form).entries());
+    <form id="myForm" action="https://formspree.io/f/xyzevzwa" method="POST">
+      <!-- 1. Bulletin d'inscription -->
+      <div class="section">
+        <h2>1. BULLETIN D'INSCRIPTION</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nom_complet">Prénom et Nom</label>
+            <input id="nom_complet" name="nom_complet" type="text" required>
+          </div>
+          <div class="form-group">
+            <label for="date_naissance">Date de naissance</label>
+            <input id="date_naissance" name="date_naissance" type="date" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="lieu_naissance">Lieu de naissance</label>
+            <input id="lieu_naissance" name="lieu_naissance" type="text" required>
+          </div>
+          <div class="form-group">
+            <label for="niveau_scolaire">Niveau scolaire</label>
+            <select id="niveau_scolaire" name="niveau_scolaire" required>
+              <option value="">Sélectionner</option>
+              <option>primaire</option><option>1AM</option><option>2AM</option>
+              <option>3AM</option><option>4AM</option><option>1AS</option>
+              <option>2AS</option><option>3AS</option>
+              <option>Université Licence</option><option>Université Master</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="adresse">Adresse complète</label>
+          <textarea id="adresse" name="adresse" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="discipline">Choisir la discipline</label>
+          <select id="discipline" name="discipline" required>
+            <option value="">Sélectionner</option>
+            <option>natation</option><option>football</option><option>judo</option>
+            <option>plongée sous-marin</option><option>waterpolo</option>
+            <option>nage avec palme</option><option>kung fu wushu</option>
+            <option>aikido</option><option>course d'orientation</option>
+            <option>sport de montagne</option>
+          </select>
+        </div>
+      </div>
 
-  // CONFIGURATION GÉNÉRALE
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const margin = 40;
-  let cursorY = margin;
+      <!-- 2. Autorisation parentale -->
+      <div class="section">
+        <h2>2. AUTORISATION PATERNELLE</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nom_tuteur">Nom et prénom du tuteur</label>
+            <input id="nom_tuteur" name="nom_tuteur" type="text" required>
+          </div>
+          <div class="form-group">
+            <label for="cni">CNI/PC/PS N°</label>
+            <input id="cni" name="cni" type="text" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="telephone">Téléphone</label>
+            <input id="telephone" name="telephone" type="tel" required>
+          </div>
+          <div class="form-group">
+            <label for="adresse_tuteur">Adresse du tuteur</label>
+            <input id="adresse_tuteur" name="adresse_tuteur" type="text" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>
+            Je soussigné(e) <span class="signature-line"></span><br>
+            déclare autoriser mon enfant à pratiquer la discipline choisie au sein du CSR.<br>
+            Fait à : <input name="fait_a" type="text" style="width:120px;">
+            le : <input name="date_autorisation" type="date">
+          </p>
+        </div>
+      </div>
 
-  // FONCTIONS UTILES
-  const addTitle = (text) => {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(18);
-    doc.setTextColor(43, 108, 176);
-    doc.text(text, pageWidth / 2, cursorY, { align: 'center' });
-    cursorY += 30;
-  };
+      <!-- 3. Certificat médical -->
+      <div class="section">
+        <h2>3. CERTIFICAT MÉDICAL</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="nom_medecin">Nom du médecin</label>
+            <input id="nom_medecin" name="nom_medecin" type="text" required>
+          </div>
+          <div class="form-group">
+            <label for="date_certificat">Date du certificat</label>
+            <input id="date_certificat" name="date_certificat" type="date" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <p>
+            Je soussigné(e) Dr <span class="signature-line"></span><br>
+            atteste par la présente que le(la) nommé(e) <input name="nom_certificat" type="text" required><br>
+            est apte à pratiquer sa discipline.<br>
+            Date de validité<br>
+            <input name="date_validite" type="date" required>
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="visa_medical">Visa médical (signature numérique)</label>
+          <input id="visa_medical" name="visa_medical" type="file" accept="image/*">
+        </div>
+      </div>
 
-  const addSectionHeader = (text) => {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor(33, 37, 41);
-    doc.text(text, margin, cursorY);
-    cursorY += 20;
-  };
+      <div style="text-align:center;">
+        <button type="submit">Soumettre</button>
+        <button type="button" onclick="generatePDF()">Générer PDF</button>
+      </div>
+    </form>
+  </div>
 
-  const addKeyValue = (key, value) => {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.text(`${key}:`, margin, cursorY);
-    doc.setFont('helvetica', 'normal');
-    doc.text(String(value), margin + 120, cursorY);
-    cursorY += 18;
-  };
+  <script>
+    function generatePDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit:'pt', format:'a4' });
+      const W = doc.internal.pageSize.getWidth();
+      const M = 40;
+      let y = M;
 
-  const drawLine = () => {
-    doc.setDrawColor(200);
-    doc.setLineWidth(0.5);
-    doc.line(margin, cursorY, pageWidth - margin, cursorY);
-    cursorY += 10;
-  };
+      const title = t => { doc.setFont('helvetica','bold').setFontSize(18).setTextColor(43,108,176); doc.text(t, W/2, y, { align:'center' }); y+=30; };
+      const sectionH = t => { doc.setFont('helvetica','bold').setFontSize(14).setTextColor(33,37,41); doc.text(t, M, y); y+=20; };
+      const kv = (k,v) => { doc.setFont('helvetica','bold').setFontSize(11).text(k+' :', M, y); doc.setFont('helvetica','normal').text(v||'-', M+120, y); y+=18; };
+      const line = () => { doc.setDrawColor(200).setLineWidth(0.5).line(M,y,W-M,y); y+=10; };
 
-  // 1. EN-TÊTE
-  addTitle('CLUB SPORTIF REDJAOUNA / CSR');
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(8);
-  doc.setTextColor(80);
-  doc.text(
-'Adresse : Bureau du Comité de Village Redjaouna El Bour,Tizi‑Ouzou', pageWidth / 2, cursorY, { align: 'center' });
-  cursorY += 25;
-  doc.text('Tél : 0661 68 77 23', pageWidth / 2, cursorY, { align: 'center' });
-  cursorY += 30;
-  drawLine();
+      const data = Object.fromEntries(new FormData(document.getElementById('myForm')).entries());
 
-  // 2. BULLETIN D’INSCRIPTION
-  addSectionHeader('1. BULLETIN D’INSCRIPTION');
-  addKeyValue('Prénom & Nom', data.nom_complet);
-  addKeyValue('Date de naissance', data.date_naissance);
-  addKeyValue('Lieu de naissance', data.lieu_naissance);
-  addKeyValue('Niveau scolaire', data.niveau_scolaire);
-  addKeyValue('Adresse complète', data.adresse);
-  cursorY += 10;
-  drawLine();
+      // 1. En‑tête
+      title('CLUB SPORTIF REDJAOUNA / CSR');
+      doc.setFont('helvetica','normal').setFontSize(8).setTextColor(80);
+      doc.text('Adresse : Bureau du Comité de Village Redjaouna El Bour, Tizi‑Ouzou', W/2, y, { align:'center' }); y+=15;
+      doc.text('Tél : 0661 68 77 23', W/2, y, { align:'center' }); y+=25;
+      line();
 
-  // 3. AUTORISATION PATERNELLE
-  addSectionHeader('2. AUTORISATION PATERNELLE');
-  addKeyValue('Nom & Prénom du tuteur', data.nom_tuteur);
-  addKeyValue('CNI/PC/PS N°', data.cni);
-  addKeyValue('Téléphone', data.telephone);
-  addKeyValue('Adresse du tuteur', data.adresse_tuteur);
-  addKeyValue('Fait à', data.fait_a);
-  addKeyValue('Le', data.date_autorisation);
-  cursorY += 10;
-  drawLine();
+      // 2. Bulletin
+      sectionH('1. BULLETIN D’INSCRIPTION');
+      kv('Prénom & Nom',      data.nom_complet);
+      kv('Date de naissance', data.date_naissance);
+      kv('Lieu de naissance', data.lieu_naissance);
+      kv('Niveau scolaire',   data.niveau_scolaire);
+      kv('Adresse',           data.adresse);
+      kv('Discipline',        data.discipline);
+      y+=5; line();
 
-  // 4. CERTIFICAT MÉDICAL
-  addSectionHeader('3. CERTIFICAT MÉDICAL');
-  addKeyValue('Nom du médecin', data.nom_medecin);
-  addKeyValue('Date du certificat', data.date_certificat);
-  addKeyValue('Nommé(e)', data.nom_complet);
-  addKeyValue('Aptitude', 'Apte à pratiquer ');
-  cursorY += 30;
+      // 3. Autorisation parentale
+      sectionH('2. AUTORISATION PATERNELLE');
+      kv('Nom & Prénom tuteur', data.nom_tuteur);
+      kv('CNI/PC/PS N°',        data.cni);
+      kv('Téléphone',           data.telephone);
+      kv('Adresse tuteur',      data.adresse_tuteur);
+      kv('Fait à',              data.fait_a);
+      kv('Le',                  data.date_autorisation);
+      y+=5; line();
 
-  // 5. SIGNATURES
-  const sigY = cursorY;
-  doc.setFontSize(11);
-  doc.setFont('helvetica', 'normal');
-  doc.text('Signature du tuteur', margin, sigY);
-  doc.text('Signature & cachet du médecin', pageWidth - margin - 200, sigY);
-  doc.setDrawColor(100);
-  doc.setLineWidth(0.7);
-  doc.line(margin, sigY + 15, margin + 150, sigY + 15);
-  doc.line(pageWidth - margin - 200, sigY + 15, pageWidth - margin, sigY + 15);
+      // Signature du tuteur à droite
+      const tx = W - M - 150;
+      doc.setFont('helvetica','normal').setFontSize(11);
+      doc.text('Signature du tuteur', tx, y);
+      doc.setDrawColor(100).setLineWidth(0.7).line(tx, y+15, tx+150, y+15);
 
-  // ENREGISTREMENT
-  doc.save(`Inscription-CSR-${data.nom_complet.replace(/\s+/g, '_')}.pdf`);
-}
-</script>
+      // Espacement de 5 lignes
+      y += 90;
 
+      // 4. Certificat médical
+      sectionH('3. CERTIFICAT MÉDICAL');
+      kv('Nom du médecin',     data.nom_medecin);
+      kv('Date du certificat', data.date_certificat);
+      kv('Nommé(e)',           data.nom_certificat);
+      kv('Date de validité',   data.date_validite);
+      kv('Aptitude',           'Apte à pratiquer');
+      y += 30;
 
+      // Signature du médecin à droite
+      doc.text('Signature du médecin', tx, y);
+      doc.setDrawColor(100).setLineWidth(0.7).line(tx, y+15, tx+150, y+15);
 
+      // Enregistrement
+      const safe = (data.nom_complet||'inscription').trim().replace(/\s+/g,'_');
+      doc.save(`Inscription_CSR_${safe}.pdf`);
+    }
+  </script>
 </body>
 </html>
-      
-        
-        
-        
